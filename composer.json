@@ -1,6 +1,7 @@
 {
     "name": "rkr/observer-client",
     "description": "Observer-Client",
+    "license": "MIT",
     "require": {
         "psr/log": "1.0"
     },
