@@ -20,7 +20,7 @@ class ObserverPing {
 	/**
 	 * @param ObserverClient $client
 	 * @param ObserverProject $project
-	 * @param $entityKey
+	 * @param string $entityKey
 	 */
 	public function __construct(ObserverClient $client, ObserverProject $project, $entityKey) {
 		$this->client = $client;
