@@ -1,7 +1,7 @@
 <?php
 namespace Observer\EndpointClients;
 
-class ObserverCurlClientObserver implements ObserverEndpointClient {
+class ObserverCurlClient implements ObserverEndpointClient {
 	/** @var string */
 	private $authToken;
 
