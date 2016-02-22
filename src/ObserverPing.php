@@ -1,6 +1,8 @@
 <?php
 namespace Observer;
 
+use Exception;
+
 class ObserverPing {
 	/** @var ObserverClient */
 	private $client;
@@ -167,5 +169,26 @@ class ObserverPing {
 		}
 
 		return new ObserverResponse($response);
+	}
+
+	/**
+	 * @param callable $fn
+	 * @return array
+	 * @throws Exception
+	 */
+	public function pingWith($fn) {
+		$runtime = microtime(true);
+		try {
+			$result = call_user_func($fn);
+			$this->setRuntime(microtime(true) - $runtime);
+			$this->ping();
+			return $result;
+		} catch (Exception $e) {
+			$this->setMessageIsError();
+			$this->setMessage($e->getMessage());
+			$this->setRuntime(microtime(true) - $runtime);
+			$this->ping();
+			throw $e;
+		}
 	}
 }
