@@ -8,14 +8,14 @@ use Psr\Http\Message\StreamFactoryInterface;
 
 class ObserverPsr18Client implements ObserverEndpointClient {
 	/**
-	 * @param string $authToken
+	 * @param null|string $authToken
 	 * @param ClientInterface $httpClient
 	 * @param RequestFactoryInterface $requestFactory
 	 * @param StreamFactoryInterface $streamFactory
 	 * @param string $userAgent
 	 */
 	public function __construct(
-		private string $authToken,
+		private null|string $authToken,
 		private ClientInterface $httpClient,
 		private RequestFactoryInterface $requestFactory,
 		private StreamFactoryInterface $streamFactory,
@@ -40,10 +40,13 @@ class ObserverPsr18Client implements ObserverEndpointClient {
 	 */
 	public function call($url, array $data) {
 		$request = $this->requestFactory->createRequest('POST', $url)
-			->withHeader('X-Token', $this->authToken)
 			->withHeader('User-Agent', $this->userAgent)
 			->withHeader('Content-Type', 'application/x-www-form-urlencoded')
 			->withHeader('Accept', 'application/json');
+
+		if($this->authToken !== null) {
+			$request = $request->withHeader('X-Token', $this->authToken);
+		}
 
 		$request = $request->withBody($this->streamFactory->createStream($this->encodeForm($data)));
 
