@@ -37,7 +37,9 @@ class ObserverCurlClient implements ObserverEndpointClient {
 		);
 		curl_setopt_array($ch, $options);
 		$responseStr = curl_exec($ch);
-		curl_close($ch);
+		if(PHP_VERSION_ID < 80000) {
+			curl_close($ch);
+		}
 		$response = @json_decode($responseStr, true);
 		return $response;
 	}
